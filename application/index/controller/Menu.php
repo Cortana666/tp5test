@@ -1,8 +1,8 @@
 <?php
   namespace app\index\controller;
   use think\Controller;
-  class Index extends Controller{
+  class Menu extends Controller{
     public function index() {
-      return $this -> fetch();
+      return $this -> fetch('menu');
     }
   }
