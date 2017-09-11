@@ -1,19 +1,17 @@
 <?php
   namespace app\admin\controller;
   use think\Controller;
+  use app\admin\model\Admin as AdminModel;
   class Admin extends Controller{
     public function add() {
       if (request() -> isPost()) {
-        $validate = new \think\Validate([
-            'username'  => 'require|max:25',
-            'password' => 'require|max:32'
-        ]);
         $data = [
           'username' => input('username'),
-          'password' => md5(input('password'))
+          'password' => md5(input('password')),
         ];
-        if (!$validate->check($data)) {
-            return $this -> error(($validate->getError()));
+        $validate = \think\Loader::validate('Admin');
+        if(!$validate -> scene('add') -> check($data)){
+            $this -> error($validate->getError());
             die;
         }
         if (db('admin') -> insert($data)) {
@@ -26,6 +24,8 @@
       return $this -> fetch('add');
     }
     public function menu() {
+      $list = AdminModel::paginate(2);
+      $this->assign('list', $list);
       return $this -> fetch('menu');
     }
   }
