@@ -5,4 +5,5 @@
     public function index() {
       return $this -> fetch('article');
     }
+
   }
